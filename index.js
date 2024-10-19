@@ -9,10 +9,8 @@ import connectDb from './mongo/mongo.js';
 dotenv.config();  
 const app = express();
 app.use(express.json());
-const options={
-  origin:"https://cuvette-frontend-five.vercel.app",
-}
-app.use(cors(options));
+
+app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/email', emailRoutes);
