@@ -1,9 +1,9 @@
 import sendMulitpleMails from '../utils/sendMultiplemails.js'
 export const sendmails = async (req, res) => {
   const { jobTitle, jobDescription, experienceLevel, candidates, endDate } = req.body;
+const {companyName,email}=req.user;
   const subject = 'Job Alert';
   const text = 'New Job opportunity for you';
-  
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +19,7 @@ export const sendmails = async (req, res) => {
 
     <p style="font-size: 16px;">Dear Candidate,</p>
 
-    <p style="font-size: 16px;">${text}</p>
+    <p style="font-size: 16px;">${text} from ${companyName}</p>
 
     <div style="background-color: #ecf0f1; padding: 20px; border-radius: 5px; margin: 20px 0;">
         <h2 style="color: #2c3e50; margin-top: 0;">Job Details:</h2>
@@ -31,11 +31,11 @@ export const sendmails = async (req, res) => {
         </ul>
     </div>
 
-    <p style="font-size: 16px;">If you have any questions, please don't hesitate to contact us.</p>
+    <p style="font-size: 16px;">If you have any questions, please don't hesitate to contact us at ${email}.</p>
 
     <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #bdc3c7;">
         <p style="font-size: 16px; margin-bottom: 5px;">Best regards,</p>
-        <p style="font-size: 16px; font-weight: bold; color: #2c3e50;">Hiring Team</p>
+        <p style="font-size: 16px; font-weight: bold; color: #2c3e50;">${companyName}Hiring Team</p>
     </div>
 
     <div style="text-align: center; margin-top: 30px; font-size: 14px; color: #7f8c8d;">
@@ -44,13 +44,11 @@ export const sendmails = async (req, res) => {
 </body>
 </html>
 `;
-
   try {
     const mailsInfo = await sendMulitpleMails(candidates, subject, text, html); 
     if (!mailsInfo) {
       return res.status(500).json({ error: 'An error occurred while sending emails.' });
     }
-    
     return res.status(200).json({message:"Emails sent"}) 
   } catch (error) {
     console.error('Error sending emails:', error);
