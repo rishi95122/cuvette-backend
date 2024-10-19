@@ -12,6 +12,9 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
+const options={
+  origin:"https://cuvette-frontend-five.vercel.app",
+}
 app.use(cors());
 
 
